@@ -26,7 +26,8 @@ const bgMusic = document.getElementById('bg-music');
 const musicContainer = document.getElementById('music-container');
 
 document.addEventListener('DOMContentLoaded', () => {
-    createPetals();
+    createPetals('petal-container');
+    createPetals('petal-container-2');
 
     // Coba putar musik secara otomatis saat web dimuat
     if (bgMusic.paused) {
@@ -39,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Fungsi untuk membuat efek kelopak bunga jatuh
-function createPetals() {
-    const petalContainer = document.getElementById('petal-container');
+function createPetals(containerId) {
+    const petalContainer = document.getElementById(containerId);
     if (!petalContainer) return;
 
     const petalImages = [
@@ -249,6 +250,6 @@ function kirimDataRSVP() {
         })
         .finally(() => {
             tombolKirim.disabled = false;
-            tombolKirim.innerText = "Kirim Konfirmasi";
+            tombolKirim.innerText = "CONFIRM!";
         });
 }

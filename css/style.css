@@ -189,7 +189,7 @@ button:hover {
     height: 100vh;
     overflow: hidden;
     pointer-events: none;
-    z-index: 15; /* Dinaikkan agar tampil di atas rumput dan elemen dekoratif lainnya */
+    z-index: 8; /* Di belakang menu makanan dan foto, tapi di atas rumput (5) */
 }
 
 .petal {
