@@ -1,0 +1,987 @@
+/* Mengatur font, warna latar belakang, dan menempatkan elemen tepat di tengah layar */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('../assets/images/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Membuat tampilan kotak (kartu) untuk formulir undangan */
+.card-undangan {
+    /* Membuat kartu sedikit transparan agar gambar background tetap terlihat elegan di baliknya */
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Mengatur jarak antar input formulir */
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Desain untuk kolom input teks dan dropdown (select) */
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Desain tombol utama */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff6b81;
+    /* Warna merah muda / pink */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+/* Efek saat kursor diarahkan ke tombol (Hover) */
+button:hover {
+    background-color: #ff4757;
+    /* Berubah menjadi warna yang sedikit lebih gelap */
+}
+
+/* Jarak dan ukuran font untuk notifikasi berhasil/gagal */
+#pesan-status {
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* =========================================
+   MULTI-STEP VIEW STYLES
+   ========================================= */
+.hidden {
+    display: none !important;
+}
+
+.view-section {
+    /* Animasi masuk dihilangkan sesuai permintaan */
+}
+
+.view-section p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+/* =========================================
+   FOOD MENU STYLES (FULL SCREEN GRID)
+   ========================================= */
+.food-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    max-width: 1000px;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.food-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #B1B999;
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    box-sizing: border-box;
+    border: 3px solid transparent;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.food-card input[type="radio"] {
+    display: none;
+}
+
+.food-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background-color: #fff; /* Memberi warna dasar putih jika gambar transparan */
+}
+
+.food-name {
+    font-family: 'Sunday', sans-serif;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Checked state (Saat makanan dipilih) */
+.food-card:has(input[type="radio"]:checked) {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    background-color: #A1A88A;
+    border: 3px solid #B56B45; /* Coklat */
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* =========================================
+   PETAL ANIMATION (MENU MAKANAN)
+   ========================================= */
+#petal-container, #petal-container-2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 15; /* Dinaikkan agar tampil di atas rumput dan elemen dekoratif lainnya */
+}
+
+.petal {
+    position: absolute;
+    top: -10vh; /* Mulai dari atas luar layar */
+    opacity: 0.9;
+}
+
+/* Animasi jatuh lurus ke bawah */
+@keyframes falling {
+    0% {
+        top: -10vh;
+    }
+    100% {
+        top: 110vh;
+    }
+}
+
+/* Animasi goyang natural 1 */
+@keyframes sway1 {
+    0% { transform: translateX(0px) rotate(0deg); }
+    33% { transform: translateX(30px) rotate(45deg); }
+    66% { transform: translateX(-30px) rotate(90deg); }
+    100% { transform: translateX(0px) rotate(135deg); }
+}
+
+/* Animasi goyang natural 2 */
+@keyframes sway2 {
+    0% { transform: translateX(0px) rotate(0deg); }
+    33% { transform: translateX(-40px) rotate(-45deg); }
+    66% { transform: translateX(40px) rotate(-90deg); }
+    100% { transform: translateX(0px) rotate(-135deg); }
+}
+
+/* Animasi putar lebih ekstrem */
+@keyframes sway3 {
+    0% { transform: translateX(0px) rotate(0deg); }
+    50% { transform: translateX(50px) rotate(180deg); }
+    100% { transform: translateX(-20px) rotate(360deg); }
+}
+
+/* =========================================
+   WELCOME PAGE (FULL SCREEN OVERLAY)
+   ========================================= */
+
+@font-face {
+    font-family: 'Sunday';
+    src: url('../assets/fonts/Sunday-BF689605a03a771.ttf');
+}
+
+.full-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../assets/images/background.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tipografi Halaman Utama */
+.arched-text {
+    width: 600px;
+    height: 120px;
+    margin-bottom: 0px;
+    /* Ubah angka ini untuk memperlebar/mempersempit jarak */
+}
+
+.arched-text text {
+    font-family: 'Sunday', 'Segoe UI', sans-serif;
+    font-size: 95px;
+    fill: #617A55;
+    letter-spacing: 5px;
+}
+
+.nama-ulang-tahun {
+    font-family: 'Sunday', 'Segoe UI', sans-serif;
+    font-size: 160px;
+    color: #B56B45;
+    margin: 0;
+    letter-spacing: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1;
+}
+
+.sub-judul {
+    font-family: 'Sunday', 'Segoe UI', sans-serif;
+    font-size: 35px;
+    color: #4a5c40;
+    margin: 10px 0 30px 0;
+    letter-spacing: 4px;
+}
+
+/* Ornamen Botanical */
+.ornament {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.rumput {
+    bottom: -20vh;
+    /* Ditarik jauh ke bawah untuk menyembunyikan ruang kosong bawaan gambar */
+    left: -10vw;
+    width: 120vw;
+    height: auto;
+    /* Mengembalikan proporsi asli agar tidak gepeng */
+}
+
+.bunga-kiri {
+    bottom: 0;
+    left: 0;
+    width: 45vw;
+    max-width: 450px;
+    height: auto;
+}
+
+.bunga-kanan {
+    bottom: 0;
+    right: 0;
+    width: 40vw;
+    max-width: 400px;
+    height: auto;
+}
+
+.kupu-kupu-1 {
+    bottom: 25vh;
+    right: 15vw;
+    width: 80px;
+    animation: floating 4s ease-in-out infinite;
+}
+
+.kupu-kupu-2 {
+    bottom: 35vh;
+    right: 8vw;
+    width: 65px;
+    animation: floating 5s ease-in-out infinite 1s;
+    /* Waktu animasi dan jeda yang berbeda agar terlihat alami */
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+/* Ornamen RSVP Baru */
+.pagar-kiri {
+    bottom: 15vh; /* Dinaikkan agar pangkal pagar tertutup oleh bunga */
+    left: 0; /* Dibuat menempel ke sisi paling kiri */
+    width: 45vw;
+    max-width: 450px;
+    height: auto;
+    z-index: 6;
+}
+
+.bunga3-kiri {
+    bottom: -2vh;
+    left: -2vw;
+    width: 45vw;
+    max-width: 450px;
+    height: auto;
+    z-index: 7;
+}
+
+.kupu-rsvp {
+    bottom: 25vh; /* Berada di sekitar bunga kiri */
+    left: 10vw;
+    width: 70px;
+    z-index: 8;
+    animation: butterfly-free-flight 12s ease-in-out infinite;
+}
+
+/* Animasi kupu-kupu terbang bebas (x, y, putaran) */
+@keyframes butterfly-free-flight {
+    0% { transform: translate(0, 0) rotate(0deg) scaleX(1); }
+    15% { transform: translate(40px, -50px) rotate(15deg) scaleX(0.8); }
+    35% { transform: translate(80px, 10px) rotate(-10deg) scaleX(1); }
+    50% { transform: translate(40px, 40px) rotate(-30deg) scaleX(0.9); }
+    70% { transform: translate(-20px, 60px) rotate(-15deg) scaleX(1); }
+    85% { transform: translate(-40px, 10px) rotate(10deg) scaleX(0.8); }
+    100% { transform: translate(0, 0) rotate(0deg) scaleX(1); }
+}
+
+.rumput2-kanan {
+    bottom: -2vh;
+    right: -2vw;
+    width: 75vw;
+    max-width: 750px;
+    height: auto;
+    z-index: 6;
+}
+
+.awan-kiri {
+    top: -5vh;
+    left: -5vw;
+    width: 50vw;
+    max-width: 500px;
+    height: auto;
+    z-index: 5;
+}
+
+.awan-kanan {
+    top: -5vh;
+    right: -5vw;
+    width: 50vw;
+    max-width: 500px;
+    height: auto;
+    z-index: 5;
+}
+
+/* Tombol Coklat (Next) */
+.btn-coklat {
+    background-color: #B56B45;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 25px;
+    font-size: 20px;
+    font-family: 'Sunday', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(181, 107, 69, 0.4);
+    transition: transform 0.2s, background-color 0.2s;
+    letter-spacing: 1px;
+    width: auto;
+    /* Mencegah tombol memanjang 100% di layar HP */
+    min-width: 200px;
+}
+
+.btn-coklat:hover {
+    background-color: #945332;
+    transform: scale(1.05);
+}
+
+/* =========================================
+   RSVP PAGE (FULL SCREEN EVENT INFO)
+   ========================================= */
+.rsvp-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -5vh;
+}
+
+.event-title {
+    font-family: 'Sunday', 'Segoe UI', sans-serif;
+    font-size: 85px;
+    color: #4a5c40;
+    letter-spacing: 5px;
+    margin: 0 0 20px 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.event-details {
+    margin-bottom: 30px;
+}
+
+.event-details p {
+    font-family: 'Sunday', 'Segoe UI', sans-serif;
+    font-size: 40px;
+    color: #A17A69;
+    /* Warna coklat pudar */
+    margin: 15px 0;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.maps-link {
+    color: #4a5c40; /* Warna hijau tua mengikuti teks 'WILL BE HELD' */
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.maps-link:hover {
+    color: #8c6e5c; /* Berubah coklat saat di-hover */
+    transform: scale(1.1);
+}
+
+.event-details .icon {
+    font-size: 30px;
+}
+
+.event-details .icon-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+.rsvp-form-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 90vw;
+    max-width: 450px;
+}
+
+.input-nama-rsvp {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.85);
+    font-size: 16px;
+    font-weight: bold;
+    color: #4a5c40;
+    text-align: center;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.input-nama-rsvp:focus {
+    outline: 2px solid #aebd93;
+}
+
+.btn-rsvp {
+    width: 100%;
+    background-color: rgba(174, 189, 147, 0.9);
+    /* Hijau pudar transparan */
+    color: #333;
+    border: 2px solid transparent;
+    padding: 15px;
+    border-radius: 15px;
+    font-size: 22px;
+    font-family: 'Sunday', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.btn-rsvp:hover {
+    background-color: rgba(174, 189, 147, 1);
+    transform: translateY(-2px);
+}
+
+.btn-rsvp.active {
+    background-color: #B56B45;
+    /* Berubah coklat jika dipilih */
+    color: white;
+}
+
+.btn-action {
+    background-color: #A17A69;
+    color: white;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.btn-action.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.btn-action:hover {
+    background-color: #8c6e5c;
+}
+
+/* =========================================
+   CLOUD TRANSITION ANIMATION
+   ========================================= */
+.cloud-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Menghilangkan status hidden bawaan agar bisa ditransisikan */
+.cloud-overlay:not(.hidden) {
+    display: block !important;
+}
+
+.cloud {
+    position: absolute;
+    top: -25vh;
+    height: 150vh;
+    width: 150vw;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.cloud-left {
+    left: 0;
+    transform: translateX(-100%);
+    object-position: right center;
+}
+
+/* Cermin gambar awan untuk sisi kanan agar menyatu */
+.cloud-right {
+    right: 0;
+    transform: translateX(100%) scaleX(-1);
+    object-position: right center;
+}
+
+/* State saat awan menutup layar (Awan akan menutupi layar sepenuhnya dari ujung ke ujung) */
+.cloud-overlay.closing .cloud-left {
+    transform: translateX(0%);
+}
+
+.cloud-overlay.closing .cloud-right {
+    transform: translateX(0%) scaleX(-1);
+}
+
+/* =========================================
+   THANK YOU PAGE (SCROLLING GALLERY)
+   ========================================= */
+.thankyou-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.scrolling-row {
+    width: 100vw;
+    height: 35vh; /* Mengambil 35% layar agar foto terlihat besar */
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.top-row {
+    margin-top: 3vh;
+}
+
+.bottom-row {
+    margin-bottom: 3vh;
+}
+
+.scroll-track {
+    display: flex;
+    gap: 80px; /* Jarak antar foto diperlebar */
+    height: 100%;
+    align-items: center;
+}
+
+.scroll-track img {
+    height: 90%;
+    width: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Animasi gulir ke KIRI (Untuk baris bawah) */
+@keyframes scrollLeft {
+    /* Translasi 50% karena ada 2 set gambar kembar, dikurangi setengah gap agar berputar mulus */
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 40px)); } 
+}
+
+/* Animasi gulir ke KANAN (Untuk baris atas) */
+@keyframes scrollRight {
+    0% { transform: translateX(calc(-50% - 40px)); }
+    100% { transform: translateX(0); }
+}
+
+.track-left {
+    animation: scrollLeft 50s linear infinite;
+    width: max-content; 
+}
+
+.track-right {
+    animation: scrollRight 50s linear infinite;
+    width: max-content;
+}
+
+.thankyou-text {
+    text-align: center;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.7); /* Latar transparan tipis agar teks menonjol */
+    padding: 20px 40px;
+    border-radius: 20px;
+}
+
+.thankyou-text h1 {
+    font-family: 'Sunday', sans-serif;
+    font-size: 5rem;
+    color: #6C7043;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+    margin: 0;
+}
+
+#pesan-status {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 1.5rem;
+    color: #555;
+    margin-top: 10px;
+    font-weight: normal;
+}
+
+/* =========================================
+   MUSIC BUTTON
+   ========================================= */
+.music-container {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: transform 0.2s ease;
+}
+
+.music-container:hover {
+    transform: scale(1.1);
+}
+
+.music-container:active {
+    transform: scale(0.95);
+}
+
+.music-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Memberikan efek berdenyut halus agar terlihat aktif */
+    animation: pulse 2s infinite alternate; 
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+/* Efek TERCORET merah saat di-pause */
+.music-container.paused img {
+    animation: none;
+    filter: grayscale(100%);
+    opacity: 0.8;
+}
+
+.music-container::after {
+    content: '';
+    position: absolute;
+    top: 100%; /* Mulai dari pojok kiri bawah */
+    left: 0;
+    width: 141.4%; /* Panjang diagonal kotak persis (akar 2) */
+    height: 4px;
+    background-color: #ff3b30;
+    border-radius: 2px;
+    transform-origin: left center;
+    transform: rotate(-45deg);
+    opacity: 0; /* Default invisible */
+}
+
+.music-container.paused::after {
+    opacity: 1;
+    animation: drawLine 0.3s ease-out forwards;
+}
+
+.music-container.playing::after {
+    opacity: 1;
+    animation: undrawLine 0.3s ease-out forwards;
+}
+
+@keyframes drawLine {
+    0% {
+        clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    }
+    100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+}
+
+@keyframes undrawLine {
+    0% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    100% {
+        clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+    }
+}
+
+/* =========================================
+   BACK BUTTON
+   ========================================= */
+.back-button {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 45px;
+    height: auto;
+    cursor: pointer;
+    z-index: 100; /* Selalu di atas agar bisa diklik */
+    transition: transform 0.2s ease;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+}
+
+.back-button:active {
+    transform: scale(0.95);
+}
+
+/* =========================================
+   RESPONSIVE (MOBILE VIEW)
+   ========================================= */
+@media (max-width: 768px) {
+
+    /* Menyesuaikan ukuran teks melengkung */
+    .arched-text {
+        width: 90vw;
+        height: auto;
+        aspect-ratio: 800 / 150;
+        margin-bottom: 0px;
+        /* Diubah agar tidak menempel di HP */
+    }
+
+    /* Menyesuaikan nama agar tidak terpotong */
+    .nama-ulang-tahun {
+        font-size: 18vw;
+        letter-spacing: 4px;
+    }
+
+    /* Menyesuaikan sub judul */
+    .sub-judul {
+        font-size: 4.5vw;
+        margin-bottom: 25px;
+    }
+
+    /* Menarik rumput sedikit ke atas untuk layar HP yang lebih tinggi */
+    .rumput {
+        bottom: -5vh;
+        width: 150vw;
+        left: -25vw;
+    }
+
+    /* Menyesuaikan kupu-kupu */
+    .kupu-kupu-1 {
+        width: 60px;
+        right: 20vw;
+        bottom: 25vh;
+    }
+
+    .kupu-kupu-2 {
+        width: 45px;
+        right: 5vw;
+        bottom: 32vh;
+    }
+
+    /* Penyesuaian ornamen RSVP baru di HP */
+    .pagar-kiri {
+        width: 70vw;
+        bottom: 18vh;
+        left: 0;
+    }
+    
+    .bunga3-kiri {
+        width: 80vw;
+        bottom: -2vh;
+        left: -10vw;
+    }
+
+    .rumput2-kanan {
+        width: 120vw;
+        bottom: -2vh;
+        right: -15vw;
+    }
+
+    .awan-kiri {
+        width: 75vw;
+        top: -2vh;
+    }
+
+    .awan-kanan {
+        width: 75vw;
+        top: -2vh;
+    }
+
+    /* Penyesuaian ukuran teks acara di HP */
+    .event-title {
+        font-size: 14vw;
+        margin-bottom: 10px;
+    }
+
+    .event-details p {
+        font-size: 7vw;
+        margin: 10px 0;
+    }
+
+    .event-details .icon {
+        font-size: 6vw;
+    }
+
+    .event-details .icon-img {
+        height: 7vw;
+    }
+
+    .btn-rsvp {
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    /* Penyesuaian Food Grid di HP */
+    .food-menu-container {
+        padding: 80px 15px 30px 15px; /* Jarak atas diperbesar (80px) agar lebih turun */
+        height: 100%;
+        overflow-y: auto;
+        justify-content: flex-start;
+    }
+
+    .food-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+        gap: 12px;
+        margin-bottom: 20px;
+        max-width: 420px; /* Diperbesar signifikan, mentok sampai pinggir layar HP */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .food-card {
+        padding: 10px;
+        border-radius: 12px;
+        border-width: 2px;
+    }
+    
+    .food-card:has(input[type="radio"]:checked) {
+        border-width: 2px;
+    }
+
+    .food-card img {
+        margin-bottom: 8px;
+        border-radius: 8px;
+        width: 100%; /* Mengikuti lebar grid maksimal */
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    .food-name {
+        font-size: 13px; /* Teks lebih besar agar sangat jelas terbaca */
+        letter-spacing: 0px;
+        line-height: 1.2;
+    }
+    
+    #tombol-kirim {
+        padding: 12px 20px;
+        font-size: 16px;
+        margin-top: 5px;
+        margin-bottom: 30px;
+        width: 90%;
+        max-width: 300px;
+    }
+}
