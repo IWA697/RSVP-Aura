@@ -51,8 +51,8 @@ function createPetals(containerId) {
     ];
     const swayAnimations = ['sway1', 'sway2', 'sway3'];
 
-    // Buat 100 kelopak bunga untuk efek yang jauh lebih ramai
-    const numPetals = 100;
+    // Buat 200 kelopak bunga untuk efek yang jauh lebih ramai
+    const numPetals = 300;
 
     for (let i = 0; i < numPetals; i++) {
         let petal = document.createElement('img');
