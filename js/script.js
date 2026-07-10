@@ -45,9 +45,9 @@ function createPetals(containerId) {
     if (!petalContainer) return;
 
     const petalImages = [
-        'assets/images/kelopak1.png',
-        'assets/images/kelopak2.png',
-        'assets/images/kelopak3.png'
+        'assets/images/kelopak1.webp',
+        'assets/images/kelopak2.webp',
+        'assets/images/kelopak3.webp'
     ];
     const swayAnimations = ['sway1', 'sway2', 'sway3'];
 
